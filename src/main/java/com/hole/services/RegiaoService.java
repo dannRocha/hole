@@ -3,6 +3,7 @@ package com.hole.services;
 import java.util.List;
 
 import com.hole.entities.Regiao;
+import com.hole.exceptions.EntityNotFoundException;
 import com.hole.repositories.RegiaoRepository;
 
 import org.springframework.stereotype.Service;
@@ -26,6 +27,8 @@ public class RegiaoService {
   }
 
   public Regiao buscarRegiaoPorId(Long id) {
-    return regiaoRepository.findById(id).orElseThrow();
+    return regiaoRepository.findById(id).orElseThrow(() ->
+      new EntityNotFoundException("Regiao não encontrada")
+    );
   }
 }

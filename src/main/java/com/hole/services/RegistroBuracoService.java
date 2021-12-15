@@ -3,6 +3,7 @@ package com.hole.services;
 import java.util.List;
 
 import com.hole.entities.RegistroBuraco;
+import com.hole.exceptions.EntityNotFoundException;
 import com.hole.repositories.RegistroBuracoRepository;
 
 import org.springframework.data.domain.Page;
@@ -13,9 +14,11 @@ import org.springframework.stereotype.Service;
 public class RegistroBuracoService {
   
   private final RegistroBuracoRepository repository;
-
-  public RegistroBuracoService(RegistroBuracoRepository repository) {
+  private final CidadeService cidadeService;
+  
+  public RegistroBuracoService(RegistroBuracoRepository repository, CidadeService cidadeService) {
     this.repository = repository;
+    this.cidadeService = cidadeService;
   }
 
   public List<RegistroBuraco> listarRegistrosBuracos() {
@@ -23,6 +26,8 @@ public class RegistroBuracoService {
   }
 
   public RegistroBuraco registrarBuraco(RegistroBuraco buraco) {
+    var cidade = cidadeService.buscarCidadePorId(buraco.getCidade().getId());
+    buraco.setCidade(cidade);
     return repository.save(buraco);
   }
 
@@ -31,7 +36,7 @@ public class RegistroBuracoService {
   }
 
   public RegistroBuraco buscarRegistroPorId(Long id) {
-    return repository.findById(id).orElseThrow(() -> new RuntimeException("Recurso nãp encontrado"));
+    return repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Recurso nãp encontrado"));
   }
 
   public RegistroBuraco atualizarRegistro(Long id, RegistroBuraco novoRegistro) {
