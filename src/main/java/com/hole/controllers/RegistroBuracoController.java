@@ -22,8 +22,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.annotations.Api;
+
 @RestController
 @RequestMapping("v1/buracos")
+@Api(tags="Registro de Buraco")
 public class RegistroBuracoController {
   
   private final RegistroBuracoService registroBuracoService;
