@@ -1,5 +1,7 @@
 package com.hole.controllers;
 
+import javax.validation.Valid;
+
 import com.hole.dto.buraco.ConsultaRegistroBuracoDTO;
 import com.hole.dto.buraco.RegistroBuracoDTO;
 import com.hole.entities.RegistroBuraco;
@@ -40,7 +42,7 @@ public class RegistroBuracoController {
 
 
   @PostMapping
-  public ResponseEntity<RegistroBuraco> registrarBuraco(@RequestBody RegistroBuracoDTO registroDTO) {
+  public ResponseEntity<RegistroBuraco> registrarBuraco(@Valid @RequestBody RegistroBuracoDTO registroDTO) {
     return ResponseEntity.status(HttpStatus.CREATED).body(
       registroBuracoService.registrarBuraco(RegistroBuracoMapper.fromDTO(registroDTO))
     );
@@ -49,7 +51,7 @@ public class RegistroBuracoController {
   @PutMapping("{id}")
   public ResponseEntity<ConsultaRegistroBuracoDTO> atualizarRegistroBuraco(
     @PathVariable Long id, 
-    @RequestBody RegistroBuracoDTO registroDTO) 
+    @Valid @RequestBody RegistroBuracoDTO registroDTO) 
   {
     return ResponseEntity.ok(
       RegistroBuracoMapper.fromEntity(

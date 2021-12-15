@@ -1,9 +1,10 @@
 package com.hole.controllers;
 
+import javax.validation.Valid;
+
 import com.hole.dto.cidade.CidadeDTO;
 import com.hole.dto.cidade.CidadeDetailsDTO;
 import com.hole.dto.cidade.RegistroCidadeDTO;
-import com.hole.entities.Cidade;
 import com.hole.mappers.CidadeMapper;
 import com.hole.services.CidadeService;
 
@@ -49,14 +50,16 @@ public class CidadeController {
 
 
   @PostMapping
-  public ResponseEntity<Cidade> salvarCidade(@RequestBody RegistroCidadeDTO cidadeDTO) {
+  public ResponseEntity<CidadeDTO> salvarCidade(@Valid @RequestBody RegistroCidadeDTO cidadeDTO) {
     return ResponseEntity.ok(
-      cidadeService.salvarCidade(CidadeMapper.fromDTO(cidadeDTO))
+      CidadeMapper.fromEntity(
+        cidadeService.salvarCidade(CidadeMapper.fromDTO(cidadeDTO))
+      )
     );
   }
 
   @PutMapping("{id}")
-  public ResponseEntity<CidadeDTO> atualizarCidade(@PathVariable Long id,  @RequestBody RegistroCidadeDTO cidadeDTO) {
+  public ResponseEntity<CidadeDTO> atualizarCidade(@PathVariable Long id,  @Valid @RequestBody RegistroCidadeDTO cidadeDTO) {
     return ResponseEntity.ok(
       CidadeMapper.fromEntity(
         cidadeService.atualizarCidade(id, CidadeMapper.fromDTO(cidadeDTO))

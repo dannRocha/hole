@@ -1,5 +1,7 @@
 package com.hole.controllers;
 
+import javax.validation.Valid;
+
 import com.hole.dto.util.AuthDTO;
 import com.hole.dto.util.TokenDTO;
 import com.hole.services.AutenticacaoService;
@@ -24,8 +26,7 @@ public class AutenticacaoController {
   }
 
   @PostMapping
-  public ResponseEntity<TokenDTO> login(@RequestBody AuthDTO authDTO) {
-    // return ResponseEntity.ok(authService.autenticar(authDTO));
+  public ResponseEntity<TokenDTO> login(@Valid @RequestBody AuthDTO authDTO) {
 
     try {
       return ResponseEntity.ok(authService.autenticar(authDTO));

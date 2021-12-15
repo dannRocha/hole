@@ -3,10 +3,11 @@ package com.hole.controllers;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
 import com.hole.dto.estado.DetailsEstadoDTO;
 import com.hole.dto.estado.EstadoDTO;
 import com.hole.dto.estado.RegistroEstadoDTO;
-import com.hole.entities.Estado;
 import com.hole.mappers.EstadoMapper;
 import com.hole.services.EstadoService;
 
@@ -49,14 +50,16 @@ public class EstadoController {
   }
 
   @PostMapping
-  public ResponseEntity<Estado> salvarEstado(@RequestBody RegistroEstadoDTO registroDTO) {
+  public ResponseEntity<EstadoDTO> salvarEstado(@Valid @RequestBody RegistroEstadoDTO registroDTO) {
     return ResponseEntity.ok(
-      estadoService.salvarEstado(EstadoMapper.fromDTO(registroDTO))
+      EstadoMapper.fromEntity(
+        estadoService.salvarEstado(EstadoMapper.fromDTO(registroDTO))
+      )
     );
   }
 
   @PutMapping("{id}")
-  public ResponseEntity<DetailsEstadoDTO> atualizarEstado(@PathVariable Long id, @RequestBody RegistroEstadoDTO registroDTO) {
+  public ResponseEntity<DetailsEstadoDTO> atualizarEstado(@PathVariable Long id, @Valid @RequestBody RegistroEstadoDTO registroDTO) {
     return ResponseEntity.ok(
       EstadoMapper.fromDetailsEntity(
         estadoService.atualizarEstado(id, EstadoMapper.fromDTO(registroDTO))

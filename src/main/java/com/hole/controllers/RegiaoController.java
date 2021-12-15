@@ -3,6 +3,8 @@ package com.hole.controllers;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
 import com.hole.dto.regiao.ConsultaRegiaoDTO;
 import com.hole.dto.regiao.RegiaoDTO;
 import com.hole.dto.regiao.RegistroRegiaoDTO;
@@ -47,7 +49,7 @@ public class RegiaoController {
   }
 
   @PostMapping
-  public ResponseEntity<RegiaoDTO> salvarRegiao(@RequestBody RegistroRegiaoDTO regiaoDTO) {
+  public ResponseEntity<RegiaoDTO> salvarRegiao(@Valid @RequestBody RegistroRegiaoDTO regiaoDTO) {
     return ResponseEntity.ok(
       RegiaoMapper.fromEntity(
         regiaoService.salvarRegiao(RegiaoMapper.fromDTO(regiaoDTO))
