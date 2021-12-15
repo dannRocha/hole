@@ -61,7 +61,7 @@ public class RegistroBuracoController {
   }
 
   @DeleteMapping("{id}")
-  public ResponseEntity<ConsultaRegistroBuracoDTO> atualizarRegistroBuraco(@PathVariable Long id) {
+  public ResponseEntity<ConsultaRegistroBuracoDTO> removerRegistroBuraco(@PathVariable Long id) {
     return ResponseEntity.ok(
       RegistroBuracoMapper.fromEntity(
         registroBuracoService.removerRegistro(id)
