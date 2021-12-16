@@ -30,8 +30,8 @@ public class AutenticacaoController {
     this.authService = authService;
   }
 
-  @PostMapping
-  public ResponseEntity<TokenDTO> login(@Valid @RequestBody AuthDTO authDTO) {
+  @PostMapping("signIn")
+  public ResponseEntity<TokenDTO> signIn(@Valid @RequestBody AuthDTO authDTO) {
 
     try {
       return ResponseEntity.ok(authService.autenticar(authDTO));
