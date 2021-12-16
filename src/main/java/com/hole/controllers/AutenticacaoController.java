@@ -3,6 +3,7 @@ package com.hole.controllers;
 import javax.validation.Valid;
 
 import com.hole.dto.util.AuthDTO;
+import com.hole.dto.util.RegistroAuthDTO;
 import com.hole.dto.util.TokenDTO;
 import com.hole.services.AutenticacaoService;
 
@@ -36,5 +37,13 @@ public class AutenticacaoController {
     } catch (AuthenticationException e) {
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
+  }
+
+  @PostMapping("signUp")
+  @PreAuthorize("hasAnyAuthority('ADMIN')")
+  public ResponseEntity<TokenDTO> signUp(@Valid @RequestBody RegistroAuthDTO authDTO) {
+    return ResponseEntity.ok(
+      authService.inscrever(authDTO)
+    );
   }
 }
