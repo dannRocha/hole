@@ -7,9 +7,6 @@ spring:
     pathmatch:
       matching-strategy: ant-path-matcher
 
-# spring.mvc.pathmatch.matching-strategy=ant-path-matcher
-
-
 hole:
   jwt:
     secret: 6FLhmWAdj7
