@@ -60,7 +60,7 @@ public class SpringFoxConfig {
     }
 
   private ApiKey apiKey() {
-    return new ApiKey("apiKey", "Authorization", "header");
+    return new ApiKey("Bearer", "Authorization", "header");
   }
 
   private SecurityContext securityContext() {
@@ -73,7 +73,7 @@ public class SpringFoxConfig {
     var authorizationScope = new AuthorizationScope("global", "accessEverything");
     var authorizationScopes = new AuthorizationScope[1];
     authorizationScopes[0] = authorizationScope;
-    return Arrays.asList(new SecurityReference("apiKey", authorizationScopes));
+    return Arrays.asList(new SecurityReference("Bearer", authorizationScopes));
   }
 
   @Bean
