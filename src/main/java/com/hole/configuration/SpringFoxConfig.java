@@ -52,9 +52,8 @@ public class SpringFoxConfig {
 
   
   private ApiInfo apiInfo() {
-    return new ApiInfoBuilder().title("**Comment**")
-        .description("**Comment**")
-        .termsOfServiceUrl("**Comment**")
+    return new ApiInfoBuilder().title("Registro de buracos")
+        .description("API com o objetivo de registrar buracos nas avenidas e estradas das cidades")
         .license("MIT")
         .licenseUrl("**Comment**").version("0.0.1")
         .build();
