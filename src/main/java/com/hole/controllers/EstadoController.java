@@ -12,6 +12,7 @@ import com.hole.mappers.EstadoMapper;
 import com.hole.services.EstadoService;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -53,6 +54,7 @@ public class EstadoController {
   }
 
   @PostMapping
+  @PreAuthorize("hasAuthority('ADMIN')")
   public ResponseEntity<EstadoDTO> salvarEstado(@Valid @RequestBody RegistroEstadoDTO registroDTO) {
     return ResponseEntity.ok(
       EstadoMapper.fromEntity(
@@ -62,6 +64,7 @@ public class EstadoController {
   }
 
   @PutMapping("{id}")
+  @PreAuthorize("hasAuthority('ADMIN')")
   public ResponseEntity<DetailsEstadoDTO> atualizarEstado(@PathVariable Long id, @Valid @RequestBody RegistroEstadoDTO registroDTO) {
     return ResponseEntity.ok(
       EstadoMapper.fromDetailsEntity(

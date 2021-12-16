@@ -12,6 +12,7 @@ import com.hole.mappers.RegiaoMapper;
 import com.hole.services.RegiaoService;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -52,6 +53,7 @@ public class RegiaoController {
   }
 
   @PostMapping
+  @PreAuthorize("hasAuthority('ADMIN')")
   public ResponseEntity<RegiaoDTO> salvarRegiao(@Valid @RequestBody RegistroRegiaoDTO regiaoDTO) {
     return ResponseEntity.ok(
       RegiaoMapper.fromEntity(

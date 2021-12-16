@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -53,6 +54,7 @@ public class CidadeController {
 
 
   @PostMapping
+  @PreAuthorize("hasAuthority('ADMIN')")
   public ResponseEntity<CidadeDTO> salvarCidade(@Valid @RequestBody RegistroCidadeDTO cidadeDTO) {
     return ResponseEntity.ok(
       CidadeMapper.fromEntity(
@@ -62,6 +64,7 @@ public class CidadeController {
   }
 
   @PutMapping("{id}")
+  @PreAuthorize("hasAuthority('ADMIN')")
   public ResponseEntity<CidadeDTO> atualizarCidade(@PathVariable Long id,  @Valid @RequestBody RegistroCidadeDTO cidadeDTO) {
     return ResponseEntity.ok(
       CidadeMapper.fromEntity(
@@ -71,6 +74,7 @@ public class CidadeController {
   }
 
   @DeleteMapping("{id}")
+  @PreAuthorize("hasAuthority('ADMIN')")
   public ResponseEntity<CidadeDTO> removerCidade(@PathVariable Long id) {
     return ResponseEntity.ok(
       CidadeMapper.fromEntity(cidadeService.removerCidade(id))
