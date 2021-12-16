@@ -1,5 +1,7 @@
 package com.hole.controllers;
 
+import javax.validation.Valid;
+
 import com.hole.dto.buraco.ConsultaRegistroBuracoDTO;
 import com.hole.dto.buraco.RegistroBuracoDTO;
 import com.hole.entities.RegistroBuraco;
@@ -20,8 +22,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.annotations.Api;
+
 @RestController
 @RequestMapping("v1/buracos")
+@Api(tags="Registro de Buraco")
 public class RegistroBuracoController {
   
   private final RegistroBuracoService registroBuracoService;
@@ -40,7 +45,7 @@ public class RegistroBuracoController {
 
 
   @PostMapping
-  public ResponseEntity<RegistroBuraco> registrarBuraco(@RequestBody RegistroBuracoDTO registroDTO) {
+  public ResponseEntity<RegistroBuraco> registrarBuraco(@Valid @RequestBody RegistroBuracoDTO registroDTO) {
     return ResponseEntity.status(HttpStatus.CREATED).body(
       registroBuracoService.registrarBuraco(RegistroBuracoMapper.fromDTO(registroDTO))
     );
@@ -49,7 +54,7 @@ public class RegistroBuracoController {
   @PutMapping("{id}")
   public ResponseEntity<ConsultaRegistroBuracoDTO> atualizarRegistroBuraco(
     @PathVariable Long id, 
-    @RequestBody RegistroBuracoDTO registroDTO) 
+    @Valid @RequestBody RegistroBuracoDTO registroDTO) 
   {
     return ResponseEntity.ok(
       RegistroBuracoMapper.fromEntity(
@@ -59,7 +64,7 @@ public class RegistroBuracoController {
   }
 
   @DeleteMapping("{id}")
-  public ResponseEntity<ConsultaRegistroBuracoDTO> atualizarRegistroBuraco(@PathVariable Long id) {
+  public ResponseEntity<ConsultaRegistroBuracoDTO> removerRegistroBuraco(@PathVariable Long id) {
     return ResponseEntity.ok(
       RegistroBuracoMapper.fromEntity(
         registroBuracoService.removerRegistro(id)

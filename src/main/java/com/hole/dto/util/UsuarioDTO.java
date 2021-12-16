@@ -1,26 +1,28 @@
 package com.hole.dto.util;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
+
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
-public class AuthDTO {
-  
+public class UsuarioDTO {
+
   @NotBlank
-  @NotEmpty
+  @NotNull
   private String email;
-  
+
   @NotBlank
-  @NotEmpty
+  @NotNull
   private String senha;
+
+  @NotNull
+  private Long perfilId;
 }

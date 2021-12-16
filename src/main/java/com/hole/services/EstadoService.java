@@ -3,6 +3,7 @@ package com.hole.services;
 import java.util.List;
 
 import com.hole.entities.Estado;
+import com.hole.exceptions.EntityNotFoundException;
 import com.hole.repositories.EstadoRepository;
 
 import org.springframework.stereotype.Service;
@@ -11,9 +12,12 @@ import org.springframework.stereotype.Service;
 public class EstadoService {
   
   private final EstadoRepository estadoRepository;
+  private final RegiaoService regiaoService;
 
-  public EstadoService(EstadoRepository estadoRepository) {
+
+  public EstadoService(EstadoRepository estadoRepository, RegiaoService regiaoService) {
     this.estadoRepository = estadoRepository;
+    this.regiaoService = regiaoService;
   }
 
   public List<Estado> listarEstados() {
@@ -21,12 +25,14 @@ public class EstadoService {
   }
 
   public Estado salvarEstado(Estado estado) {
+    var regiao = regiaoService.buscarRegiaoPorId(estado.getRegiao().getId());
+    estado.setRegiao(regiao);
     return estadoRepository.save(estado);
   }
 
   public Estado buscarEstadoPorId(Long id) {
     return estadoRepository.findById(id).orElseThrow(() ->
-      new RuntimeException("Recuso não encontrado")
+      new EntityNotFoundException("Estado não encontrado")
     );
   }
 

@@ -3,6 +3,7 @@ package com.hole.services;
 import com.hole.entities.Usuario;
 import com.hole.exceptions.EmailExistsException;
 import com.hole.exceptions.EntityNotFoundException;
+import com.hole.repositories.PerfilRepository;
 import com.hole.repositories.UsuarioRepository;
 
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,15 +16,22 @@ import org.springframework.stereotype.Service;
 public class UsuarioService implements UserDetailsService {
   
   private final UsuarioRepository usuarioRepository;
+  private final PerfilRepository perfilRepository;
 
-  public UsuarioService(UsuarioRepository usuarioRepository) {
+
+  public UsuarioService(UsuarioRepository usuarioRepository, PerfilRepository perfilRepository) {
     this.usuarioRepository = usuarioRepository;
+    this.perfilRepository = perfilRepository;
   }
 
   public Usuario buscarUsuarioPorEmail(String email) {
     return usuarioRepository.findByEmail(email).orElseThrow(() ->
       new EntityNotFoundException("Usuário ou senha invalido")
     );
+  }
+
+  public Boolean emailExists(String email) {
+    return usuarioRepository.findByEmail(email).isPresent();
   }
 
   public Usuario buscarUsuarioPorId(Long id) {
@@ -37,6 +45,13 @@ public class UsuarioService implements UserDetailsService {
     usuario.setSenha(new BCryptPasswordEncoder().encode(usuario.getSenha()));
       
     var usuarioSalvo =  usuarioRepository.findByEmail(usuario.getEmail());
+    var perfilSalvo = perfilRepository.findById(usuario.getPerfil().getId());
+
+    if(perfilSalvo.isEmpty()) {
+      throw new EntityNotFoundException("Perfil não encontrado");
+    }
+
+    usuario.setPerfil(perfilSalvo.get());
 
     if(usuarioSalvo.isPresent()) {
      throw new EmailExistsException();

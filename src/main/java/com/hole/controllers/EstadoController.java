@@ -3,14 +3,16 @@ package com.hole.controllers;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
 import com.hole.dto.estado.DetailsEstadoDTO;
 import com.hole.dto.estado.EstadoDTO;
 import com.hole.dto.estado.RegistroEstadoDTO;
-import com.hole.entities.Estado;
 import com.hole.mappers.EstadoMapper;
 import com.hole.services.EstadoService;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,8 +21,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.annotations.Api;
+
 @RestController
 @RequestMapping("v1/estados")
+@Api(tags="Estado")
 public class EstadoController {
   
   private final EstadoService estadoService;
@@ -49,14 +54,18 @@ public class EstadoController {
   }
 
   @PostMapping
-  public ResponseEntity<Estado> salvarEstado(@RequestBody RegistroEstadoDTO registroDTO) {
+  @PreAuthorize("hasAuthority('ADMIN')")
+  public ResponseEntity<EstadoDTO> salvarEstado(@Valid @RequestBody RegistroEstadoDTO registroDTO) {
     return ResponseEntity.ok(
-      estadoService.salvarEstado(EstadoMapper.fromDTO(registroDTO))
+      EstadoMapper.fromEntity(
+        estadoService.salvarEstado(EstadoMapper.fromDTO(registroDTO))
+      )
     );
   }
 
   @PutMapping("{id}")
-  public ResponseEntity<DetailsEstadoDTO> atualizarEstado(@PathVariable Long id, @RequestBody RegistroEstadoDTO registroDTO) {
+  @PreAuthorize("hasAuthority('ADMIN')")
+  public ResponseEntity<DetailsEstadoDTO> atualizarEstado(@PathVariable Long id, @Valid @RequestBody RegistroEstadoDTO registroDTO) {
     return ResponseEntity.ok(
       EstadoMapper.fromDetailsEntity(
         estadoService.atualizarEstado(id, EstadoMapper.fromDTO(registroDTO))

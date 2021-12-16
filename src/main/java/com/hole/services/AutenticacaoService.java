@@ -2,12 +2,14 @@ package com.hole.services;
 
 import java.util.Date;
 
-
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.hole.dto.util.AuthDTO;
+import com.hole.dto.util.RegistroAuthDTO;
 import com.hole.dto.util.TokenDTO;
+import com.hole.entities.Perfil;
 import com.hole.entities.Usuario;
+import com.hole.exceptions.PasswordRegisterException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,9 +23,6 @@ import org.springframework.stereotype.Service;
 public class AutenticacaoService {
   
 
-  @Autowired
-  private AuthenticationManager authManager;
-
   @Value("${hole.jwt.expiration}")
   private String expiration;
 
@@ -33,7 +32,16 @@ public class AutenticacaoService {
   @Value("${hole.jwt.issuer}")
   private String issuer;
 
+  @Autowired
+  private final AuthenticationManager authManager;
+  private final UsuarioService usuarioService;
+
  
+  public AutenticacaoService(AuthenticationManager authManager, UsuarioService usuarioService) {
+    this.authManager = authManager;
+    this.usuarioService = usuarioService;
+  }
+
   public TokenDTO autenticar(AuthDTO authDTO) throws AuthenticationException {
     var auth = authManager.authenticate(
       new UsernamePasswordAuthenticationToken(
@@ -41,8 +49,6 @@ public class AutenticacaoService {
         authDTO.getSenha()
       )
     );
-
-    System.out.println(auth);
 
     return new TokenDTO(gerarToken(auth));
 
@@ -87,6 +93,23 @@ public class AutenticacaoService {
       .getSubject();
 
     return Long.parseLong(subject);
+  }
+
+  public TokenDTO inscrever(RegistroAuthDTO authDTO) {
+
+    if(!authDTO.isValidPassword()) {
+      throw new PasswordRegisterException();
+    }
+    
+    var usuario = new Usuario(
+      null, authDTO.getEmail(), 
+      authDTO.getSenha(),
+      new Perfil(authDTO.getPerfilId())
+    );
+
+    usuarioService.salvarUsuario(usuario);
+
+    return autenticar(new AuthDTO(authDTO.getEmail(), authDTO.getSenha()));
   }
  
 }
