@@ -14,14 +14,14 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ApiErrorDTO {
+public class ApiErrorDTO<T> {
   private String message;
-  private List<String> errors;
+  private List<T> errors;
   private HttpStatus status;
   
-  public ApiErrorDTO(String message, String error, HttpStatus status) {
+  public ApiErrorDTO(String message, T error, HttpStatus status) {
     this.message = message;
-    this.errors = Arrays.asList(error);
+    this.errors = (List<T>) Arrays.asList(error);
     this.status = status;
   }
 }
