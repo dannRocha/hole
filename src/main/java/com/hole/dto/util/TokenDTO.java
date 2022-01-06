@@ -11,4 +11,9 @@ import lombok.Setter;
 @NoArgsConstructor
 public class TokenDTO {
   private String token;
+
+  @Override
+  public String toString() {
+    return token;
+  }
 }
