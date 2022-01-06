@@ -22,7 +22,11 @@ public class PopulateDatabase {
     }
 
     usuarioService.salvarUsuario(
-      new Usuario(null, "admin@example.com", "H0L3_3sYR@Dª", new Perfil(1L))
+      new Usuario(null, "admin@example.com", "9oL!$_TR@S4", new Perfil(1L))
+    );
+    
+    usuarioService.salvarUsuario(
+      new Usuario(null, "user@example.com", "9oL!$_TR@S4", new Perfil(2L))
     );
   }
 }
